@@ -1,278 +1,740 @@
 import {
   Box,
   Typography,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Avatar,
-  Chip,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import {
+  DashboardRounded,
+  PeopleAltRounded,
+  MapRounded,
+  WarningAmberRounded,
+  DescriptionRounded,
+  BarChartRounded,
+  SettingsRounded,
+  LogoutRounded,
+  ShieldRounded,
+  CircleRounded,
+  ChevronRightRounded,
+  WifiRounded,
+} from "@mui/icons-material";
 
-import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
-import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
-import MapRoundedIcon from "@mui/icons-material/MapRounded";
-import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
-import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
-import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import ShieldRoundedIcon from "@mui/icons-material/ShieldRounded";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const menu = [
+const menuItems = [
   {
-    name: "Dashboard",
-      path: "/dashboard",
-    icon: <DashboardRoundedIcon />,
+    label: "Dashboard",
+    path: "/dashboard",
+    icon: <DashboardRounded />,
   },
   {
-    name: "Tourists",
+    label: "Tourists",
     path: "/tourists",
-    icon: <PeopleAltRoundedIcon />,
+    icon: <PeopleAltRounded />,
   },
   {
-    name: "Geo Fence",
+    label: "Geo Fence",
     path: "/geofence",
-    icon: <MapRoundedIcon />,
+    icon: <MapRounded />,
   },
   {
-    name: "SOS Alerts",
+    label: "SOS Alerts",
     path: "/sos",
-    icon: <WarningAmberRoundedIcon />,
+    icon: <WarningAmberRounded />,
+    alert: true,
   },
   {
-    name: "Incidents",
+    label: "Incidents",
     path: "/incidents",
-    icon: <DescriptionRoundedIcon />,
+    icon: <DescriptionRounded />,
   },
   {
-    name: "Reports",
+    label: "Reports",
     path: "/reports",
-    icon: <BarChartRoundedIcon />,
+    icon: <BarChartRounded />,
   },
   {
-    name: "Settings",
+    label: "Settings",
     path: "/settings",
-    icon: <SettingsRoundedIcon />,
+    icon: <SettingsRounded />,
   },
 ];
 
 const Sidebar = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/");
+  };
 
   return (
     <Box
       sx={{
-        width: 250,
-        minHeight: "100vh",
-        bgcolor: "#07111F",
-        color: "#fff",
+        width: 248,
+        height: "100vh",
+
+        position: "fixed",
+        left: 0,
+        top: 0,
+
         display: "flex",
         flexDirection: "column",
-        borderRight: "1px solid rgba(255,255,255,.05)",
+
+        background:
+          "linear-gradient(180deg,#07111F 0%,#081321 55%,#06101C 100%)",
+
+        borderRight:
+          "1px solid rgba(148,163,184,.08)",
+
+        color: "#fff",
+
+        zIndex: 1200,
+
+        overflow: "hidden",
+
+        /* subtle background glow */
+        "&::before": {
+          content: '""',
+
+          position: "absolute",
+
+          width: 260,
+          height: 260,
+
+          top: -100,
+          left: -100,
+
+          borderRadius: "50%",
+
+          background:
+            "rgba(37,99,235,.08)",
+
+          filter: "blur(70px)",
+
+          pointerEvents: "none",
+        },
+
+        "&::after": {
+          content: '""',
+
+          position: "absolute",
+
+          width: 220,
+          height: 220,
+
+          bottom: -100,
+          left: -80,
+
+          borderRadius: "50%",
+
+          background:
+            "rgba(79,70,229,.05)",
+
+          filter: "blur(70px)",
+
+          pointerEvents: "none",
+        },
       }}
     >
-      {/* Logo */}
+      {/* =====================================================
+          BRAND
+      ===================================================== */}
 
       <Box
         sx={{
-          px: 3,
-          py: 3,
-          display: "flex",
-          alignItems: "center",
-          gap: 2,
+          position: "relative",
+          zIndex: 2,
+
+          px: 2,
+
+          pt: 2.4,
+          pb: 2.2,
+
+          borderBottom:
+            "1px solid rgba(148,163,184,.07)",
         }}
       >
-        <Avatar
+        <Box
           sx={{
-            width: 48,
-            height: 48,
-            background:
-              "linear-gradient(135deg,#3B82F6,#6366F1)",
+            display: "flex",
+            alignItems: "center",
+            gap: 1.4,
           }}
         >
-          <ShieldRoundedIcon />
-        </Avatar>
+          {/* Logo */}
 
-        <Box>
-          <Typography
-            fontWeight="bold"
-            fontSize={24}
-          >
-            SafeTour AI
-          </Typography>
-
-          <Typography
-            fontSize={12}
-            color="#94A3B8"
-          >
-            Smart Tourist Safety
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Navigation */}
-
-      <List
-        sx={{
-          px: 2,
-          mt: 2,
-        }}
-      >
-        {menu.map((item) => (
-          <ListItemButton
-            key={item.name}
-            onClick={() => navigate(item.path)}
-            selected={location.pathname === item.path}
+          <Box
             sx={{
-              borderRadius: 3,
-              py: 1.4,
-              mb: 1.2,
+              width: 44,
+              height: 44,
 
-              color: "#94A3B8",
+              flexShrink: 0,
 
-              transition: ".3s",
+              borderRadius: "14px",
 
-              "& .MuiListItemIcon-root": {
-                color: "inherit",
-                minWidth: 42,
-              },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
 
-              "&:hover": {
-                color: "#fff",
-                bgcolor: "#182235",
-              },
+              background:
+                "linear-gradient(135deg,#2563EB,#4F46E5)",
 
-              "&.Mui-selected": {
-                color: "#fff",
+              boxShadow:
+                "0 10px 30px rgba(37,99,235,.35)",
 
-                background:
-                  "linear-gradient(90deg,#3B82F6,#5B5DF7)",
+              position: "relative",
 
-                boxShadow:
-                  "0 8px 25px rgba(59,130,246,.35)",
+              "&::after": {
+                content: '""',
 
-                "&:hover": {
-                  background:
-                    "linear-gradient(90deg,#3B82F6,#5B5DF7)",
-                },
+                position: "absolute",
+
+                inset: -4,
+
+                borderRadius: "17px",
+
+                border:
+                  "1px solid rgba(96,165,250,.12)",
               },
             }}
           >
-            <ListItemIcon>
-              {item.icon}
-            </ListItemIcon>
-
-            <ListItemText
-              primary={item.name}
+            <ShieldRounded
+              sx={{
+                color: "#fff",
+                fontSize: 25,
+              }}
             />
-          </ListItemButton>
-        ))}
-      </List>
+          </Box>
 
-      <Box sx={{ flexGrow: 1 }} />
+          {/* Brand text */}
 
-            {/* Divider */}
+          <Box>
+            <Typography
+              sx={{
+                color: "#F8FAFC",
+
+                fontSize: 15,
+
+                fontWeight: 800,
+
+                letterSpacing: "-0.2px",
+
+                lineHeight: 1.15,
+              }}
+            >
+              SafeTour AI
+            </Typography>
+
+            <Typography
+              sx={{
+                color: "#64748B",
+
+                fontSize: 10,
+
+                mt: 0.4,
+
+                fontWeight: 600,
+
+                letterSpacing: 0.2,
+              }}
+            >
+              SMART TOURIST SAFETY
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* =====================================================
+          NAVIGATION
+      ===================================================== */}
+
       <Box
         sx={{
-          mx: 3,
-          mb: 3,
-          borderTop: "1px solid rgba(255,255,255,.08)",
-        }}
-      />
+          position: "relative",
+          zIndex: 2,
 
-      {/* Admin Profile */}
-      <Box
-        sx={{
-          px: 3,
-          display: "flex",
-          alignItems: "center",
-          gap: 2,
+          flex: 1,
+
+          px: 1.5,
+
+          pt: 2,
         }}
       >
-        <Avatar
+        <Typography
           sx={{
-            width: 50,
-            height: 50,
-            bgcolor: "#3B82F6",
-            fontWeight: "bold",
+            color: "#475569",
+
+            fontSize: 9,
+
+            fontWeight: 800,
+
+            letterSpacing: 1.3,
+
+            textTransform: "uppercase",
+
+            px: 1.3,
+
+            mb: 1,
           }}
         >
-          A
-        </Avatar>
+          Main Menu
+        </Typography>
 
-        <Box>
-          <Typography fontWeight="bold">
-            Admin
-          </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 0.55,
+          }}
+        >
+          {menuItems.map((item) => {
+            const isActive =
+              location.pathname === item.path;
 
-          <Typography
-            fontSize={12}
-            color="#94A3B8"
-          >
-            Super Administrator
-          </Typography>
+            return (
+              <Box
+                key={item.label}
+                onClick={() => navigate(item.path)}
+                sx={{
+                  position: "relative",
 
-          <Chip
-            label="Online"
-            size="small"
+                  height: 46,
+
+                  px: 1.1,
+
+                  display: "flex",
+                  alignItems: "center",
+
+                  borderRadius: "13px",
+
+                  cursor: "pointer",
+
+                  color: isActive
+                    ? "#F8FAFC"
+                    : "#8FA0B8",
+
+                  background: isActive
+                    ? "linear-gradient(90deg,rgba(59,130,246,.22),rgba(79,70,229,.16))"
+                    : "transparent",
+
+                  border: isActive
+                    ? "1px solid rgba(96,165,250,.12)"
+                    : "1px solid transparent",
+
+                  boxShadow: isActive
+                    ? "0 8px 25px rgba(37,99,235,.12)"
+                    : "none",
+
+                  transition:
+                    "all .25s ease",
+
+                  "&:hover": {
+                    background:
+                      "rgba(59,130,246,.08)",
+
+                    color: "#E2E8F0",
+
+                    transform:
+                      "translateX(3px)",
+                  },
+
+                  /* active indicator */
+
+                  "&::before": {
+                    content: '""',
+
+                    position: "absolute",
+
+                    left: -1,
+
+                    top: "50%",
+
+                    transform:
+                      "translateY(-50%)",
+
+                    width: isActive ? 3 : 0,
+
+                    height: 25,
+
+                    borderRadius: "0 4px 4px 0",
+
+                    background:
+                      "linear-gradient(180deg,#60A5FA,#6366F1)",
+
+                    boxShadow:
+                      "0 0 12px rgba(59,130,246,.7)",
+
+                    transition:
+                      "all .25s ease",
+                  },
+                }}
+              >
+                {/* Icon */}
+
+                <Box
+                  sx={{
+                    width: 34,
+                    height: 34,
+
+                    borderRadius: "10px",
+
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+
+                    color: isActive
+                      ? "#60A5FA"
+                      : "#8292A8",
+
+                    background: isActive
+                      ? "rgba(59,130,246,.10)"
+                      : "transparent",
+
+                    transition: ".25s",
+
+                    "& svg": {
+                      fontSize: 20,
+                    },
+                  }}
+                >
+                  {item.icon}
+                </Box>
+
+                {/* Label */}
+
+                <Typography
+                  sx={{
+                    ml: 0.9,
+
+                    fontSize: 13,
+
+                    fontWeight:
+                      isActive ? 700 : 500,
+
+                    letterSpacing:
+                      "-0.1px",
+                  }}
+                >
+                  {item.label}
+                </Typography>
+
+                {/* SOS indicator */}
+
+                {item.alert && (
+                  <Box
+                    sx={{
+                      ml: "auto",
+
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+
+                      width: 21,
+                      height: 21,
+
+                      borderRadius: "7px",
+
+                      bgcolor:
+                        "rgba(239,68,68,.12)",
+
+                      color: "#F87171",
+
+                      fontSize: 9,
+
+                      fontWeight: 900,
+                    }}
+                  >
+                    2
+                  </Box>
+                )}
+
+                {/* Active arrow */}
+
+                {isActive && (
+                  <ChevronRightRounded
+                    sx={{
+                      ml: "auto",
+
+                      color: "#60A5FA",
+
+                      fontSize: 18,
+                    }}
+                  />
+                )}
+              </Box>
+            );
+          })}
+        </Box>
+      </Box>
+
+      {/* =====================================================
+          SYSTEM STATUS
+      ===================================================== */}
+
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 2,
+
+          mx: 1.5,
+          mb: 1.5,
+
+          p: 1.4,
+
+          borderRadius: "14px",
+
+          background:
+            "linear-gradient(135deg,rgba(15,23,42,.9),rgba(13,27,48,.75))",
+
+          border:
+            "1px solid rgba(34,197,94,.09)",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+
+            gap: 1,
+          }}
+        >
+          <Box
             sx={{
-              mt: 1,
-              bgcolor: "#16A34A",
-              color: "#fff",
-              fontWeight: 600,
+              width: 28,
+              height: 28,
+
+              borderRadius: "9px",
+
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+
+              bgcolor:
+                "rgba(34,197,94,.08)",
+            }}
+          >
+            <WifiRounded
+              sx={{
+                color: "#22C55E",
+                fontSize: 15,
+              }}
+            />
+          </Box>
+
+          <Box sx={{ flex: 1 }}>
+            <Typography
+              sx={{
+                color: "#CBD5E1",
+
+                fontSize: 10,
+
+                fontWeight: 700,
+              }}
+            >
+              System Status
+            </Typography>
+
+            <Typography
+              sx={{
+                color: "#475569",
+
+                fontSize: 8,
+
+                mt: 0.2,
+              }}
+            >
+              All services operational
+            </Typography>
+          </Box>
+
+          <CircleRounded
+            sx={{
+              color: "#22C55E",
+
+              fontSize: 8,
+
+              filter:
+                "drop-shadow(0 0 5px rgba(34,197,94,.7))",
             }}
           />
         </Box>
       </Box>
 
-      {/* Logout */}
-      <Box sx={{ px: 3, mt: 3 }}>
-        <ListItemButton
-          sx={{
-            borderRadius: 3,
-            py: 1.5,
-            justifyContent: "center",
+      {/* =====================================================
+          ADMIN PROFILE
+      ===================================================== */}
 
-            color: "#fff",
-
-            background:
-              "linear-gradient(135deg,#EF4444,#DC2626)",
-
-            "&:hover": {
-              background:
-                "linear-gradient(135deg,#DC2626,#B91C1C)",
-            },
-          }}
-        >
-          <Typography fontWeight="bold">
-            Logout
-          </Typography>
-        </ListItemButton>
-      </Box>
-
-      {/* Footer */}
       <Box
         sx={{
-          mt: 4,
-          p: 3,
+          position: "relative",
+          zIndex: 2,
+
+          mx: 1.5,
+
+          p: 1.4,
+
+          borderRadius: "15px",
+
+          background:
+            "rgba(255,255,255,.025)",
+
+          border:
+            "1px solid rgba(255,255,255,.06)",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1.1,
+          }}
+        >
+          <Box
+            sx={{
+              position: "relative",
+            }}
+          >
+            <Avatar
+              sx={{
+                width: 38,
+                height: 38,
+
+                bgcolor: "#3B82F6",
+
+                fontSize: 15,
+
+                fontWeight: 800,
+
+                boxShadow:
+                  "0 6px 18px rgba(59,130,246,.25)",
+              }}
+            >
+              A
+            </Avatar>
+
+            <Box
+              sx={{
+                position: "absolute",
+
+                right: -1,
+                bottom: 0,
+
+                width: 9,
+                height: 9,
+
+                borderRadius: "50%",
+
+                bgcolor: "#22C55E",
+
+                border:
+                  "2px solid #0A1524",
+              }}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              flex: 1,
+
+              minWidth: 0,
+            }}
+          >
+            <Typography
+              sx={{
+                color: "#F8FAFC",
+
+                fontSize: 12,
+
+                fontWeight: 700,
+              }}
+            >
+              Admin
+            </Typography>
+
+            <Typography
+              sx={{
+                color: "#64748B",
+
+                fontSize: 9,
+
+                mt: 0.2,
+              }}
+            >
+              Super Administrator
+            </Typography>
+          </Box>
+
+          <Tooltip title="Logout">
+            <IconButton
+              onClick={handleLogout}
+              size="small"
+              sx={{
+                width: 30,
+                height: 30,
+
+                color: "#64748B",
+
+                borderRadius: "9px",
+
+                "&:hover": {
+                  color: "#F87171",
+
+                  bgcolor:
+                    "rgba(239,68,68,.08)",
+                },
+              }}
+            >
+              <LogoutRounded
+                sx={{ fontSize: 17 }}
+              />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Box>
+
+      {/* =====================================================
+          FOOTER
+      ===================================================== */}
+
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 2,
+
+          px: 2,
+          py: 1.7,
+
           textAlign: "center",
         }}
       >
         <Typography
-          fontWeight="bold"
-          color="#fff"
+          sx={{
+            color: "#334155",
+
+            fontSize: 8,
+
+            fontWeight: 600,
+
+            letterSpacing: 0.4,
+          }}
         >
-          SafeTour AI
+          SAFETOUR AI
         </Typography>
 
         <Typography
-          fontSize={12}
-          color="#64748B"
+          sx={{
+            color: "#253449",
+
+            fontSize: 8,
+
+            mt: 0.3,
+          }}
         >
-          Travel Safe. Stay Connected.
+          Secure • Monitor • Respond
         </Typography>
       </Box>
     </Box>

@@ -1,41 +1,79 @@
 import { Box } from "@mui/material";
+
 import Navbar from "../components/Navbar/Navbar";
 import Sidebar from "../components/Sidebar/Sidebar";
+
+const SIDEBAR_WIDTH = 248;
 
 const DashboardLayout = ({ children }) => {
   return (
     <Box
       sx={{
-        display: "flex",
         minHeight: "100vh",
+
         background:
-"linear-gradient(180deg,#07111F 0%,#0B1424 100%)",
+          "linear-gradient(180deg,#07111F 0%,#0B1424 100%)",
+
+        color: "#fff",
       }}
     >
-      {/* Sidebar */}
+      {/* =====================================================
+          SIDEBAR
+      ===================================================== */}
+
       <Sidebar />
 
-      {/* Right Side */}
-   <Box
-  sx={{
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-  }}
->
-        {/* Navbar */}
+      {/* =====================================================
+          RIGHT SIDE
+      ===================================================== */}
+
+      <Box
+        sx={{
+          minHeight: "100vh",
+
+          marginLeft: `${SIDEBAR_WIDTH}px`,
+
+          width: `calc(100% - ${SIDEBAR_WIDTH}px)`,
+
+          display: "flex",
+
+          flexDirection: "column",
+
+          position: "relative",
+        }}
+      >
+        {/* =================================================
+            NAVBAR
+        ================================================= */}
+
         <Navbar />
 
-        {/* Main Content */}
-       <Box
-  component="main"
-  sx={{
-    flex: 1,
-    p: 3,
-    background:
-"linear-gradient(180deg,#07111F,#0B1424)",
-  }}
->
+        {/* =================================================
+            MAIN CONTENT
+        ================================================= */}
+
+        <Box
+          component="main"
+          sx={{
+            flex: 1,
+
+            width: "100%",
+
+            boxSizing: "border-box",
+
+            p: {
+              xs: 2,
+              md: 2.5,
+              lg: 3,
+            },
+
+            background:
+              "linear-gradient(180deg,#07111F 0%,#0B1424 100%)",
+
+            minHeight:
+              "calc(100vh - 64px)",
+          }}
+        >
           {children}
         </Box>
       </Box>
